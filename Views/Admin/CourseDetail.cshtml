@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ELearnApplication.Models.Course>
+@{
+    ViewBag.Title = "CourseDetail";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+@*<h2>@ViewBag.Name</h2>*@
+<p>
+    @Html.ActionLink("Create New", "CreateCourse")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CourseStatus)
+            
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseStatus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCourse", new { id = item.CourseId })
+                @*@Html.ActionLink("Details", "Details", new { id=item.CourseId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.CourseId })*@
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,31 @@
+﻿@model IList<ELearnApplication.Models.TransactionDetail>
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div style="background-color:red;color:white;margin-top:40px;width:40%;border:outset;border-radius:25px">
+
+    <h4 style="text-align:center">All Previous Transactions</h4>
+
+</div>
+
+@*@for (int i = 0; i < Model.Count; i++) { }*@
+@foreach(var item in Model)
+{
+    <div style="background-color:gray;color:white;padding-top:0.5%;margin-top:3%;border:solid;border-color:black;border-radius:20px;opacity:0.8;">
+        <div style="padding-left:2%;"><h2>Transaction Id : @item.TransactionId </h2></div>
+        <div style="padding-left:2%;"><h3>@item.ServiceName</h3></div>
+        <div style="padding-left:2%;"><h4> <br /> Date Of Purchase : @item.StartDate </h4></div>
+        <div style="padding-left:2%;width:50%;margin:0px;float:left"><h3>Amount : @item.Amount </h3></div>
+        <div style="padding-left:15%;width:50%;margin:0;float:right"><button class="btn btn-primary btn-lg" type="submit" onclick="NeedHelp()">Need Help ?</button></div>
+        <div><p>&nbsp;<p></div>
+    </div>
+    <br />
+    <script>
+       function NeedHelp()
+       {
+           swal("Customer Care", "You will get a call from us soon");
+       }
+    </script>
+}

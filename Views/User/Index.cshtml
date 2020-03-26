@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ELearnApplication.Models.UserHome>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div style="background-color:red;color:white;margin-top:40px;width:30%;border:outset;border-radius:25px">
+
+    <h4 style="text-align:center">Your Subscriptions</h4>
+
+</div>
+
+@foreach (var item in Model)
+{
+    <div style="background-color:gray;color:white;padding-top:0.5%;margin-top:5%;border:solid;border-color:black;border-radius:20px;opacity:0.8;">
+        <div style="padding-left:2%;"><h2>(@item.CourseCode) @item.CourseName</h2></div>
+        <div style="padding-left:2%;"><h3>Service Name : @item.Servicename</h3></div>
+        <div style="background-color:blue;width:50%;margin:0;float:left;padding-left:2%;border:solid"><h3>Start Date : @item.StartDate</h3></div>
+        <div style="background-color:green;width:50%;margin:0;float:right;padding-left:2%;border:solid"><h3>End Date : @item.EndDate</h3></div>
+        <div style="padding-left:2%;"><h4>&nbsp;<br />Description :<br /> <br /> @item.Detail</h4></div>
+        <div style="padding-left:15%;width:50%;margin:0px;float:left"><button class="btn btn-primary btn-lg" type="submit" style="margin:auto" onclick="NeedHelp()">Need Help ?</button></div>
+        <div style="padding-left:15%;width:50%;margin:0;float:right"><button class="btn btn-primary btn-lg" type="submit" onclick="GiveUsFeedback()">Give Us Feedback!</button></div>
+        <div><p>&nbsp;<p></div>
+    </div>
+    <br />
+
+    <script>
+        function GiveUsFeedback() {
+            swal("Thank You", "Your Feedback is Recorded", "success");
+        }
+        function NeedHelp() {
+            swal("Customer Care", "You will get a call from us soon");
+        }
+    </script>
+}

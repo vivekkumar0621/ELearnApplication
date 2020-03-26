@@ -1,0 +1,12 @@
+﻿@model ELearnApplication.Models.User
+@{
+    ViewBag.Title = "Deactivate";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Deactivate</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.RadioButtonFor(model=>model.UserStatus)
+}
