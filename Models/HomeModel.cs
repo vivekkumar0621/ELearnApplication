@@ -10,7 +10,9 @@ namespace ELearnApplication.Models
     public enum RoleType { User, Vendor }
     public class Login
     {
-        [Required(ErrorMessage ="EmailId is mandatory")]
+        [Display(Name = "Email address")]
+        [Required(ErrorMessage = "The email address is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string EmailId { get; set; }
         [Required(ErrorMessage = "Password is mandatory")]
         public string Password { get; set; }
@@ -30,11 +32,13 @@ namespace ELearnApplication.Models
 
         public Gender Gender { get; set; }
 
-        [Range(6000000000, 9999999999, ErrorMessage = "Contact Should be of 10 digits")]
+        [Range(6000000000, 9999999999, ErrorMessage = "Contact Should be of 10 digits and start with 6,7,8,9")]
         [Required(ErrorMessage = "Contact Should be of 10 digits")]
         public long ContactNumber { get; set; }
 
-        [Required(ErrorMessage = "Email is Mandatory")]
+        [Display(Name = "Email address")]
+        [Required(ErrorMessage = "The email address is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string EmailId { get; set; }
 
         [Required(ErrorMessage = "Address is Mandatory")]
@@ -54,6 +58,7 @@ namespace ELearnApplication.Models
         public int PinCode { get; set; }
 
         [Required(ErrorMessage = "Password is Mandatory")]
+        [MinLength(6,ErrorMessage = "Password should be of minimum 6 letters")]
         public string Password { get; set; }
 
 
