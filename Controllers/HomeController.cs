@@ -12,20 +12,20 @@ namespace ELearnApplication.Controllers
         public ActionResult Index()
         {
             //Session.RemoveAll();
-            if (Session["role"] != null)
+            if (Session["roleId"] != null)
             {
 
-                if (Session["role"].ToString() == "1")
+                if (Session["roleId"].ToString() == "1")
                 {
                     //return Content("Admin Page");
                     return RedirectToAction("Index", "Admin");
                 }
-                else if (Session["role"].ToString() == "2")
+                else if (Session["roleId"].ToString() == "2")
                 {
                     //return Content("User Page");
                     return RedirectToAction("Index", "User");
                 }
-                else if (Session["role"].ToString() == "3")
+                else if (Session["roleId"].ToString() == "3")
                 {
                     //return Content("Vendor Page");
                     return RedirectToAction("Index", "Vendor");
@@ -60,6 +60,7 @@ namespace ELearnApplication.Controllers
                     else if (a.RoleId == 2)
                     {
                         Session["roleId"] = 2;
+
                         //return Content("User Page");
                         return RedirectToAction("Index", "User");
                     }

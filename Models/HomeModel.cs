@@ -26,12 +26,14 @@ namespace ELearnApplication.Models
         [Required(ErrorMessage = "Name Should be in Range 4-50")]
         public string Name { get; set; }
 
-        [Range(18, 100, ErrorMessage = "Age Should be minimum 18")]
+        
+        [Range(18, 100, ErrorMessage = "Age must be positive and should be minimum 18")]
         [Required(ErrorMessage = "Age Field is required")]
         public int Age { get; set; }
 
         public Gender Gender { get; set; }
 
+        
         [Range(6000000000, 9999999999, ErrorMessage = "Contact Should be of 10 digits and start with 6,7,8,9")]
         [Required(ErrorMessage = "Contact Should be of 10 digits")]
         public long ContactNumber { get; set; }
