@@ -12,7 +12,26 @@ namespace ELearnApplication.Controllers
         public ActionResult Index()
         {
             //Session.RemoveAll();
-            
+            if (Session["role"] != null)
+            {
+
+                if (Session["role"].ToString() == "1")
+                {
+                    //return Content("Admin Page");
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (Session["role"].ToString() == "2")
+                {
+                    //return Content("User Page");
+                    return RedirectToAction("Index", "User");
+                }
+                else if (Session["role"].ToString() == "3")
+                {
+                    //return Content("Vendor Page");
+                    return RedirectToAction("Index", "Vendor");
+                }
+
+            }
             if (new ModelContext().Users.ToList().Count == 0)
                 return RedirectToAction("SignUpAdmin");
             return View();
@@ -100,6 +119,26 @@ namespace ELearnApplication.Controllers
 
         public ActionResult SignUp()
         {
+            if (Session["role"] != null)
+            {
+
+                if (Session["role"].ToString() == "1")
+                {
+                    //return Content("Admin Page");
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (Session["role"].ToString() == "2")
+                {
+                    //return Content("User Page");
+                    return RedirectToAction("Index", "User");
+                }
+                else if (Session["role"].ToString() == "3")
+                {
+                    //return Content("Vendor Page");
+                    return RedirectToAction("Index", "Vendor");
+                }
+
+            }
             return View();
         }
 
@@ -139,6 +178,33 @@ namespace ELearnApplication.Controllers
             context.SaveChanges();
 
             return RedirectToAction("Index"); 
+        }
+
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgetPassword(ForgetDetails details)
+        {
+            User user = new ModelContext().Users.Find(details.EmailId);
+            if (user == null)
+                return View("ForgetError");
+            if(user.ContactNumber!=details.ContactNumber)
+                return View("ForgetError");
+            NewPassword pass = new NewPassword();
+            pass.EmailId = details.EmailId;
+            return View("CreateNewPassword",pass);
+        }
+
+        public ActionResult CreatePassword(NewPassword pass)
+        {
+            ModelContext context = new ModelContext();
+            User user = context.Users.Find(pass.EmailId);
+            user.Password = pass.Password;
+            context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Logout()

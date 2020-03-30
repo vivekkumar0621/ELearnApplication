@@ -20,13 +20,13 @@ namespace ELearnApplication.Models
 
     public class SignUpDetail
     {
-        
-        [MinLength(4,ErrorMessage = "Name Should be of minimum 4 letter")]
+
+        [MinLength(4, ErrorMessage = "Name Should be of minimum 4 letter")]
         [MaxLength(50, ErrorMessage = "Name Should be of maximum 50 letter")]
         [Required(ErrorMessage = "Name Should be in Range 4-50")]
         public string Name { get; set; }
 
-        [Range(18,100,ErrorMessage = "Age Should be minimum 18")]
+        [Range(18, 100, ErrorMessage = "Age Should be minimum 18")]
         [Required(ErrorMessage = "Age Field is required")]
         public int Age { get; set; }
 
@@ -35,8 +35,8 @@ namespace ELearnApplication.Models
         [Range(6000000000, 9999999999, ErrorMessage = "Contact Should be of 10 digits and start with 6,7,8,9")]
         [Required(ErrorMessage = "Contact Should be of 10 digits")]
         public long ContactNumber { get; set; }
-        
-        
+
+
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "The email address is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
@@ -59,11 +59,36 @@ namespace ELearnApplication.Models
         public int PinCode { get; set; }
 
         [Required(ErrorMessage = "Password is Mandatory")]
-        [MinLength(6,ErrorMessage = "Password should be of minimum 6 letters")]
+        [MinLength(6, ErrorMessage = "Password should be of minimum 6 letters")]
         public string Password { get; set; }
 
 
         public RoleType RoleName { get; set; }
 
     }
+
+    public class ForgetDetails
+    {
+        [Key]
+        public string EmailId { get; set; }
+
+
+        public long ContactNumber { get; set; }
+    }
+
+    public class NewPassword
+    {
+        [Key]
+        public string EmailId { get; set; }
+
+        [Required]
+        [MinLength(6,ErrorMessage ="Password must be greater than 6 letter")]
+        public string Password { get; set; }
+
+        [Required]
+        [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
+        public string ConfirmPassword { get; set; }
+    }
+
+
 }

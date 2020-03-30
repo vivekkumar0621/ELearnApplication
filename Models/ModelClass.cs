@@ -10,6 +10,7 @@ namespace ELearnApplication.Models
     public enum Gennder { Male, Female }
     public enum ActiveStatus { Yes, No }
     public enum RoleTypes { User=2,Vendor}
+    
 
     public class User
     {
@@ -134,4 +135,6 @@ namespace ELearnApplication.Models
         [Column("User", Order = 2)]
         public string EmailId { get; set; }
     }
+
+    
 }

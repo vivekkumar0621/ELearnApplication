@@ -223,6 +223,9 @@
     <Content Include="Views\Vendor\EditCourse.cshtml" />
     <Content Include="Views\Vendor\EditService.cshtml" />
     <Content Include="Views\Home\SignUpAdmin.cshtml" />
+    <Content Include="Views\Home\ForgetPassword.cshtml" />
+    <Content Include="Views\Home\CreateNewPassword.cshtml" />
+    <Content Include="Views\Home\ForgetError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
