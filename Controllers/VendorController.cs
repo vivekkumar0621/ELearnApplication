@@ -14,7 +14,7 @@ namespace ELearnApplication.Controllers
         // GET: Vendor
         public ActionResult Index()
         {
-            if (Session["userId"] == null || Session["userId"].ToString() == "")
+            if (Session["userId"] == null || Session["userId"].ToString() == "" || Session["roleId"].ToString() != "3")
                 return RedirectToAction("Index", "Home");
             string email = Session["userId"].ToString();
             ModelContext db = new ModelContext();
@@ -57,9 +57,9 @@ namespace ELearnApplication.Controllers
             ModelContext db = new ModelContext();
 
             List<Service> list = new List<Service>();
-            
+
             List<User_Service> user_Services = db.User_Services.ToList();
-            foreach(User_Service us in user_Services)
+            foreach (User_Service us in user_Services)
             {
                 if (us.EmailId == Session["userId"].ToString())
                 {
@@ -67,9 +67,9 @@ namespace ELearnApplication.Controllers
                 }
             }
 
-           
-        
-            return View("VendorManageService",list);
+
+
+            return View("VendorManageService", list);
         }
 
         public ActionResult EditService(string sid)
@@ -92,7 +92,7 @@ namespace ELearnApplication.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditService( Service service)
+        public ActionResult EditService(Service service)
         {
             if (Session["userId"] == null || Session["userId"].ToString() == "")
                 return RedirectToAction("Index", "Home");
@@ -102,15 +102,15 @@ namespace ELearnApplication.Controllers
             s.StartDate = service.StartDate;
             s.Duration = service.Duration;
             s.Amount = service.Amount;
-            
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
             //return Content("ghsdgh");
-           
+
         }
 
-        
+
         public ActionResult CourseDetail(string Serviceid)
         {
             if (Session["userId"] == null || Session["userId"].ToString() == "")
@@ -132,9 +132,86 @@ namespace ELearnApplication.Controllers
             //return Content("Course-->"+ Serviceid);
         }
 
+        public ActionResult Search(string searching)
+        {
+            if (Session["userId"] == null || Session["userId"].ToString() == "")
+                return RedirectToAction("Index", "Home");
+            string email = Session["userId"].ToString();
+            ModelContext db = new ModelContext();
+            List<Service> services = db.Services.Where(a => a.Name.Contains(searching)).ToList();
 
+            List<Course> courses = db.Courses.Where(a => a.Name.Contains(searching)).ToList();
 
+            List<UserHome> list = new List<UserHome>();
+            List<User_Service> USList = db.User_Services.ToList();
+            if (services.Count > 0)
+            {
+                foreach (Service service in services)
+                {
+                    foreach (var us in USList)
+                    {
+                        if (us.EmailId == email && service.ServiceId == us.ServiceId)
+                        {
+                            string sid = us.ServiceId;
+                            List<Service_Course> SCList = db.Service_Courses.ToList();
 
+                            foreach (var sc in SCList)
+                            {
+                                if (sc.ServiceId == sid)
+                                {
+                                    UserHome userHome = new UserHome();
+                                    userHome.Id = email;
+                                    userHome.CourseCode = sc.CourseId;
+                                    userHome.CourseName = db.Courses.Find(userHome.CourseCode).Name;
+                                    userHome.Servicename = db.Services.Find(sid).Name;
+
+                                    userHome.StartDate = db.Services.Find(sid).StartDate.ToString();
+                                    userHome.EndDate = db.Services.Find(sid).StartDate.AddMonths(db.Services.Find(sid).Duration).ToString();
+                                    userHome.Detail = db.Courses.Find(userHome.CourseCode).Detail;
+
+                                    list.Add(userHome);
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+
+                foreach (var us in USList)
+                {
+                    if (us.EmailId == email)
+                    {
+                        string sid = us.ServiceId;
+                        List<Service_Course> SCList = db.Service_Courses.ToList();
+                        foreach (Course course in courses)
+                        {
+                            foreach (var sc in SCList)
+                            {
+                                if (sc.ServiceId == sid && course.CourseId == sc.CourseId)
+                                {
+                                    UserHome userHome = new UserHome();
+                                    userHome.Id = email;
+                                    userHome.CourseCode = sc.CourseId;
+                                    userHome.CourseName = db.Courses.Find(userHome.CourseCode).Name;
+                                    userHome.Servicename = db.Services.Find(sid).Name;
+
+                                    userHome.StartDate = db.Services.Find(sid).StartDate.ToString();
+                                    userHome.EndDate = db.Services.Find(sid).StartDate.AddMonths(db.Services.Find(sid).Duration).ToString();
+                                    userHome.Detail = db.Courses.Find(userHome.CourseCode).Detail;
+
+                                    list.Add(userHome);
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return View("Index", list);
+        }
 
         public ActionResult EditCourse(string id)
         {

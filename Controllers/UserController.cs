@@ -12,23 +12,25 @@ namespace ELearnApplication.Controllers
         // GET: User
         public ActionResult Index()
         {
-            if (Session["userId"] == null || Session["userId"].ToString() == "")
+            //if (Session["userId"] == null || Session["userId"].ToString() == "")
+            if (Session["userId"] == null || Session["userId"].ToString() == "" || Session["roleId"].ToString() != "2")
                 return RedirectToAction("Index", "Home");
+
             string email = Session["userId"].ToString();
             ModelContext db = new ModelContext();
 
             List<UserHome> list = new List<UserHome>();
             List<User_Service> USList = db.User_Services.ToList();
-            
-            foreach(var us in USList)
+
+            foreach (var us in USList)
             {
-               if(us.EmailId==email)
-               {
+                if (us.EmailId == email)
+                {
                     string sid = us.ServiceId;
                     List<Service_Course> SCList = db.Service_Courses.ToList();
-                    foreach(var sc in SCList)
+                    foreach (var sc in SCList)
                     {
-                        if(sc.ServiceId==sid)
+                        if (sc.ServiceId == sid)
                         {
                             UserHome userHome = new UserHome();
                             userHome.Id = email;
@@ -42,9 +44,9 @@ namespace ELearnApplication.Controllers
                             list.Add(userHome);
                         }
                     }
-               }
+                }
             }
-            
+
             return View(list);
             //return Content("hvshdu"+USList.Count);
         }
@@ -53,19 +55,19 @@ namespace ELearnApplication.Controllers
         {
             if (Session["userId"] == null || Session["userId"].ToString() == "")
                 return RedirectToAction("Index", "Home");
-            
+
             ModelContext db = new ModelContext();
             List<OnlineServices> list = new List<OnlineServices>();
             List<Service> services = db.Services.ToList();
-            foreach(Service s in services)
+            foreach (Service s in services)
             {
                 OnlineServices t = new OnlineServices();
                 t.ServiceName = s.Name;
                 t.Courses = new List<Course>();
                 List<Service_Course> sc = db.Service_Courses.ToList();
-                foreach(Service_Course temp in sc)
+                foreach (Service_Course temp in sc)
                 {
-                    if(temp.ServiceId==s.ServiceId)
+                    if (temp.ServiceId == s.ServiceId)
                     {
                         t.Courses.Add(db.Courses.Find(temp.CourseId));
                     }
@@ -117,7 +119,7 @@ namespace ELearnApplication.Controllers
             User user = db.Users.Find(Session["userId"].ToString());
             Address address = db.Addresses.Find(user.AddressId);
             UserDetail userDetail = new UserDetail();
-            
+
             userDetail.EmailId = user.EmailId;
             userDetail.Name = user.Name;
             userDetail.Age = user.Age;
@@ -140,7 +142,7 @@ namespace ELearnApplication.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( UserDetail details)
+        public ActionResult Edit(UserDetail details)
         {
 
             if (Session["userId"] == null || Session["userId"].ToString() == "")
@@ -152,9 +154,9 @@ namespace ELearnApplication.Controllers
             user.Name = details.Name;
             user.Age = details.Age;
             user.Gennder = (Gennder)details.Gender;
-        //    user.ContactNumber = details.;
+            //    user.ContactNumber = details.;
             user.EmailId = details.EmailId;
-        //    user.Password = details.Password;
+            //    user.Password = details.Password;
 
             if (details.RoleName == RoleType.User)
                 user.RoleId = 2;
@@ -173,7 +175,7 @@ namespace ELearnApplication.Controllers
             context.SaveChanges();
 
             user.AddressId = context.Addresses.Max(x => x.AddressId);
-       
+
             context.SaveChanges();
 
             return RedirectToAction("Index");
@@ -187,11 +189,50 @@ namespace ELearnApplication.Controllers
             db.Users.Find(Session["userId"].ToString()).UserStatus = ActiveStatus.No;
             db.SaveChanges();
             Session.RemoveAll();
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
             //User user = new ModelContext().Users.Find(Session["userId"].ToString());
-            //return View(user);
+            return View();
         }
 
 
+
+
+        public ActionResult Buy(string name)
+        {
+            ModelContext db = new ModelContext();
+            Service service = db.Services.SingleOrDefault(a => a.Name == name);
+            DateTime startDate = DateTime.Now;
+            double amount = service.Amount;
+            List<Transaction> tl = db.Transactions.OrderByDescending(a => a.TransactionId).ToList();
+            string l = tl[0].TransactionId;
+            int n = Convert.ToInt32(l.Substring(1)) + 1;
+            string str = l.Substring(0, 1) + n + "";
+            Transaction transaction = new Transaction();
+            transaction.ServiceId = service.ServiceId;
+            transaction.EmailId = Session["userId"].ToString();
+            transaction.StartTime = startDate;
+            transaction.TransactionId = str;
+            db.Transactions.Add(transaction);
+            db.SaveChanges();
+            List<Transaction> transactionList = db.Transactions.ToList();
+
+            List<TransactionDetail> list = new List<TransactionDetail>();
+            foreach (Transaction t in transactionList)
+            {
+                if (t.EmailId == Session["userId"].ToString())
+                {
+                    TransactionDetail temp = new TransactionDetail();
+                    temp.TransactionId = t.TransactionId;
+                    temp.ServiceName = name;
+                    temp.StartDate = startDate;
+                    temp.Amount = amount;
+
+                    list.Add(temp);
+                }
+            }
+            return View("History", list);
+
+
+        }
     }
 }

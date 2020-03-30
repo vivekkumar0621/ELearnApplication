@@ -105,18 +105,36 @@
                             <button class="dropbtn">Profile</button>
                             <div class="dropdown-content">
                                 <a href="/User/Edit">Edit Profile</a>
-                                <a href="/User/Deactivate">Deactivate Account</a>
+
+                                @Html.ActionLink("Deactivate Account", "Deactivate", "User", new { id = 2 },
+
+                               new { onclick = "return confirm('Are you sure to deactivate?');" })
+
                             </div>
 
                         </div>
 
                     </li>
-                    <li style="padding-top:1.5%;padding-left:15px"><input class="form-control mr-sm-2" type="text" placeholder="Search"></li>
-                    <li style="padding-top:1.5%;padding-left:15px"><button class="btn btn-default" type="submit">Search</button></li>
-                    <ul class="nav navbar-nav pull-right">
-                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                    
+                        <li style="padding-top:1.5%;padding-left:15px">
+            @using (Html.BeginForm("Search", "Vendor", FormMethod.Get))
+            {
+                <table id="search-table"  >
+                    <tr>
+                        <td>
+                            @Html.TextBox("searching", null, new { @class = "form-control", @placeholder = "Search"})
+                        </td>
+                        <td>
+                            <input type="submit" value="Search" name="submit" class="btn btn-default" id="submit" />
+                        </td>
+                    </tr>
+                </table>
+            }
+                </li>
+                        <ul class="nav navbar-nav pull-right">
+                            <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                        </ul>
                     </ul>
-                </ul>
             </div>
        </div>
     </div>

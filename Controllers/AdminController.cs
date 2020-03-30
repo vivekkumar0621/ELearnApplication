@@ -14,7 +14,7 @@ namespace ELearnApplication.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            if (Session["userId"]==null || Session["userId"].ToString() == "")
+            if (Session["userId"]==null || Session["userId"].ToString() == "" || Session["roleId"].ToString()!="1")
                 return RedirectToAction("Index", "Home");
             //return View();
             //string EmailId = Session["userId"].ToString();
@@ -66,7 +66,7 @@ namespace ELearnApplication.Controllers
         //string service;
         public ActionResult CourseDetail(string Serviceid)
         {
-            if (Session["userId"] == null || Session["userId"].ToString() == "")
+            if (Session["userId"] == null || Session["userId"].ToString() == "" || Session["roleId"].ToString() != "1")
                 return RedirectToAction("Index", "Home");
             //service = Serviceid;
             TempData["serviceid"] = Serviceid;
@@ -87,7 +87,7 @@ namespace ELearnApplication.Controllers
 
         public ActionResult EditCourse(string id)
         {
-            if (Session["userId"] == null || Session["userId"].ToString() == "")
+            if (Session["userId"] == null || Session["userId"].ToString() == "" || Session["roleId"].ToString() != "1")
                 return RedirectToAction("Index", "Home");
             if (id == null)
             {

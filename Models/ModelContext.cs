@@ -19,6 +19,8 @@ namespace ELearnApplication.Models
         public DbSet<User_Service> User_Services { get; set; }
 
         public DbSet<Transaction> Transactions { get; set; }
-    //    public System.Data.Entity.DbSet<ELearnApplication.Models.UserDetail> UserDetails { get; set; }
+
+        //public System.Data.Entity.DbSet<ELearnApplication.Models.AdminSignUpDetail> AdminSignUpDetails { get; set; }
+        //    public System.Data.Entity.DbSet<ELearnApplication.Models.UserDetail> UserDetails { get; set; }
     }
 }

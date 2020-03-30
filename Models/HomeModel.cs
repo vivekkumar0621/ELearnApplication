@@ -35,7 +35,8 @@ namespace ELearnApplication.Models
         [Range(6000000000, 9999999999, ErrorMessage = "Contact Should be of 10 digits and start with 6,7,8,9")]
         [Required(ErrorMessage = "Contact Should be of 10 digits")]
         public long ContactNumber { get; set; }
-
+        
+        
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "The email address is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]

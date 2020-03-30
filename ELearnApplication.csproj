@@ -222,6 +222,7 @@
     <Content Include="Views\Vendor\CourseDetail.cshtml" />
     <Content Include="Views\Vendor\EditCourse.cshtml" />
     <Content Include="Views\Vendor\EditService.cshtml" />
+    <Content Include="Views\Home\SignUpAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
