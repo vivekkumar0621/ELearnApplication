@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 
-@*<h2>@ViewBag.Name</h2>*@
-<p>
-    @Html.ActionLink("Create New", "CreateCourse")
-</p>
+<h2>@ViewBag.Name</h2>
+@*<p>
+        @Html.ActionLink("Create New", "CreateCourse")
+    </p>*@
 <table class="table">
     <tr>
         <th>
@@ -15,7 +15,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CourseStatus)
-            
+
         </th>
         <th></th>
     </tr>
@@ -38,3 +38,8 @@
     }
 
 </table>
+
+<p>
+    @Html.ActionLink("Create New Course", "CreateCourse", "", new { @class = "btn btn-primary btn-large" })
+</p>
+

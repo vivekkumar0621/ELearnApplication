@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "UVIndex";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
+
 }
 
 <div style="background-color:red;color:white;margin-top:40px;width:40%;border:outset;border-radius:25px">
@@ -11,17 +12,43 @@
 </div>
 @foreach (var item in Model)
 {
-    <div style="background-color:gray;color:white;padding-top:0.5%;margin-top:3%;border:solid;border-color:black;border-radius:20px;opacity:0.8;">
-        <div style="padding-left:2%;"><h2>@item.ServiceName </h2></div>
-        @foreach (var c in item.Courses)
-        {
-            <div style="padding-left:2%;"><h3>(@c.CourseId) : @c.Name</h3></div>
+<div style="background-color:gray;color:white;padding-top:0.5%;margin-top:3%;border:solid;border-color:black;border-radius:20px;opacity:0.8;">
+    <div style="padding-left:2%;"><h2>@item.ServiceName </h2></div>
+
+    @foreach (var c in item.Courses)
+    {
+        <div style="padding-left:2%;">
+            <h3>
+                (@c.CourseId) : @c.Name &nbsp;
+
+                @foreach (var r in item.UserCourseRatings)
+                {
+                    if (r == null)
+                    {
+                        continue;
+                    }
+                    if (c.CourseId == r.CourseId)
+                    {
+                        for (int i = 0; i < r.UserRating; i++)
+                        {
+                    <span class="glyphicon glyphicon-star" style="color:yellow;"></span>
+                }
+                for (int i = 0; i < 5 - r.UserRating; i++)
+                {
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                }
+            }
         }
-        <div style="padding-left:2%;width:50%;margin:0px;float:left"><h3>Amount : @item.Amount </h3></div>
-        @*<div style="padding-left:15%;width:50%;margin:0;float:right"><button class="btn btn-primary btn-lg" type="submit" onclick="BuyNow()">Buy Now</button></div>*@
-        @Html.ActionLink("Buy now", "Buy", new { name = @item.ServiceName }, new { onclick = "return BuyNow()", @class = "btn btn-primary btn-large" })
-        <div><p>&nbsp;<p></div>
-    </div>
+            </h3>
+        </div>
+    }
+    
+
+    <div style="padding-left:2%;width:50%;margin:0px;float:left"><h3>Amount : Rs. @item.Amount </h3></div>
+    @*<div style="padding-left:15%;width:50%;margin:0;float:right"><button class="btn btn-primary btn-lg" type="submit" onclick="BuyNow()">Buy Now</button></div>*@
+    @Html.ActionLink("Buy now", "Buy", new { name = @item.ServiceName }, new { onclick = "return BuyNow()", @class = "btn btn-primary btn-large" })
+    <div><p>&nbsp;<p></div>
+</div>
     <br />
     @*<script>
                function BuyNow()

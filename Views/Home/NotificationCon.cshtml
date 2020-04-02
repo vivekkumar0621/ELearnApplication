@@ -1,0 +1,24 @@
+﻿
+@model IEnumerable<ELearnApplication.Models.Notification>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Notifications</h2>
+
+
+
+
+@foreach (var item in Model)
+{
+    <div style="padding:10px;background-color:darkslategray;color:white">
+        <div style="padding:10px;background-color:gray">
+            <p>Notification No : @item.NotificationId </p> @Html.DisplayFor(modelItem => item.NotificationMessage)
+        </div>
+    </div>
+    <div><br /></div>
+
+
+}

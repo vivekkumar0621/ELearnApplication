@@ -81,6 +81,7 @@ namespace ELearnApplication.Controllers
                 course = context.Courses.SingleOrDefault(a => a.CourseId == sc.CourseId);
                 courses.Add(course);
             }
+            ViewBag.Name = context.Services.Find(Serviceid).Name;
             return View(courses);
             //return Content("Course-->"+ Serviceid);
         }
@@ -475,7 +476,7 @@ namespace ELearnApplication.Controllers
             return null;
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? Length)
         {
             if (Session["userId"] == null || Session["userId"].ToString() == "")
                 return RedirectToAction("Index", "Home");
@@ -490,14 +491,20 @@ namespace ELearnApplication.Controllers
             if (Session["userId"] == null || Session["userId"].ToString() == "")
                 return RedirectToAction("Index", "Home");
             ModelContext db = new ModelContext();
-            if (ModelState.IsValid)
-            {
-                db.Services.Add(service);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(service);
+            List<Service> tl = db.Services.OrderByDescending(a => a.ServiceId).ToList();
+            string l = tl[0].ServiceId;
+            int n = Convert.ToInt32(l.Substring(1)) + 1;
+            string str = l.Substring(0, 1) + n + "";
+            Service s = new Service();
+            s.ServiceId = str;
+            s.StartDate = DateTime.Now.Date;
+            s.Name = service.Name;
+            s.Duration = service.Duration;
+            s.Amount = service.Amount;
+            db.Services.Add(s);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 

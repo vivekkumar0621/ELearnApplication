@@ -51,6 +51,49 @@ namespace ELearnApplication.Controllers
             //return Content("hvshdu"+USList.Count);
         }
 
+        //public ActionResult UVIndex()
+        //{
+        //    if (Session["userId"] == null || Session["userId"].ToString() == "")
+        //        return RedirectToAction("Index", "Home");
+
+        //    ModelContext db = new ModelContext();
+        //    List<OnlineServices> list = new List<OnlineServices>();
+        //    List<Service> services = db.Services.ToList();
+        //    foreach (Service s in services)
+        //    {
+
+
+        //        OnlineServices t = new OnlineServices();
+        //        t.ServiceName = s.Name;
+        //        t.Courses = new List<Course>();
+
+        //        t.UserCourseRatings = new List<CourseRating>();
+        //        List<Service_Course> sc = db.Service_Courses.ToList();
+        //        foreach (Service_Course temp in sc)
+        //        {
+        //            if (temp.ServiceId == s.ServiceId)
+        //            {
+        //                t.Courses.Add(db.Courses.Find(temp.CourseId));
+
+        //                CourseRating courseRating = db.CourseRatings.Find(temp.CourseId);
+        //                t.UserCourseRatings.Add(courseRating);
+
+
+        //            }
+        //        }
+        //        t.Amount = s.Amount;
+
+
+
+
+
+        //        list.Add(t);
+
+        //    }
+        //    //return Content(" " + list[0].UserCourseRatings[0].UserRating+ " " + list[0].UserCourseRatings[1].UserRating);
+        //    return View("UVIndex",list);
+        //}
+
         public ActionResult UVIndex()
         {
             if (Session["userId"] == null || Session["userId"].ToString() == "")
@@ -63,16 +106,28 @@ namespace ELearnApplication.Controllers
             {
                 OnlineServices t = new OnlineServices();
                 t.ServiceName = s.Name;
+
                 t.Courses = new List<Course>();
+
+                t.UserCourseRatings = new List<CourseRating>();
+
+
+
                 List<Service_Course> sc = db.Service_Courses.ToList();
                 foreach (Service_Course temp in sc)
                 {
                     if (temp.ServiceId == s.ServiceId)
                     {
                         t.Courses.Add(db.Courses.Find(temp.CourseId));
+                        //t.UserCourseRatings.Add(db.CourseRatings.Find(temp.CourseId));
+                        CourseRating courseRating = db.CourseRatings.Find(temp.CourseId);
+                        t.UserCourseRatings.Add(courseRating);
+
+
                     }
                 }
                 t.Amount = s.Amount;
+
                 list.Add(t);
 
             }
@@ -131,7 +186,7 @@ namespace ELearnApplication.Controllers
             userDetail.UserStatus = user.UserStatus;
 
             userDetail.AddressLine1 = address.AddressLine1;
-            userDetail.AddressLine1 = address.AddressLine1;
+            userDetail.AddressLine2 = address.AddressLine2;
             userDetail.City = address.City;
             userDetail.State = address.State;
             userDetail.Country = address.Country;
@@ -194,26 +249,35 @@ namespace ELearnApplication.Controllers
             return View();
         }
 
-
-
-
         public ActionResult Buy(string name)
         {
+            if (Session["userId"] == null || Session["userId"].ToString() == "")
+                return RedirectToAction("Index", "Home");
             ModelContext db = new ModelContext();
             Service service = db.Services.SingleOrDefault(a => a.Name == name);
             DateTime startDate = DateTime.Now;
             double amount = service.Amount;
-            List<Transaction> tl = db.Transactions.OrderByDescending(a => a.TransactionId).ToList();
-            string l = tl[0].TransactionId;
-            int n = Convert.ToInt32(l.Substring(1)) + 1;
-            string str = l.Substring(0, 1) + n + "";
+            // List<Transaction> tl = db.Transactions.OrderByDescending(a => a.TransactionId).ToList();
+            //string l = tl[0].TransactionId;
+            //string l = db.Transactions.Max(x => x.TransactionId);
+            //int n = Convert.ToInt32(l.Substring(1, l.Length - 1)) + 1;
+            int n = db.Transactions.ToList().Count+1;
+            //string str = l.Substring(0, 1) + n ;
             Transaction transaction = new Transaction();
             transaction.ServiceId = service.ServiceId;
             transaction.EmailId = Session["userId"].ToString();
             transaction.StartTime = startDate;
-            transaction.TransactionId = str;
+            transaction.TransactionId ="T"+n;
             db.Transactions.Add(transaction);
             db.SaveChanges();
+
+            User_Service user_Service = new User_Service();
+            user_Service.EmailId = transaction.EmailId;
+            user_Service.ServiceId = service.ServiceId;
+            db.User_Services.Add(user_Service);
+            db.SaveChanges();
+
+
             List<Transaction> transactionList = db.Transactions.ToList();
 
             List<TransactionDetail> list = new List<TransactionDetail>();
@@ -233,6 +297,42 @@ namespace ELearnApplication.Controllers
             return View("History", list);
 
 
+        }
+
+        public ActionResult Rating(string CourseId, int rating, string comment)
+        {
+
+            if (Session["userId"] == null || Session["userId"].ToString() == "")
+                return RedirectToAction("Index", "Home");
+            string email = Session["userId"].ToString();
+            ModelContext db = new ModelContext();
+            CourseRating courseRating = db.CourseRatings.Find(CourseId);
+            courseRating.UserRating = rating;
+            courseRating.Comment = comment;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Feedback(string CourseId)
+        {
+            if (Session["userId"] == null || Session["userId"].ToString() == "")
+                return RedirectToAction("Index", "Home");
+            ModelContext db = new ModelContext();
+            CourseRating courseRating = db.CourseRatings.Find(CourseId);
+            return View(courseRating);
+        }
+
+        public ActionResult NeedHelp()
+        {
+            ModelContext context = new ModelContext();
+            string str = Session["userId"].ToString() + "NeedHelp help in a course. Please contact. Time : " + DateTime.Now;
+            Notification notification = new Notification();
+            notification.NotificationId = context.Notifications.ToList().Count + 1;
+            notification.NotificationMessage = str;
+            notification.NotificationFor = "Admin";
+            context.Notifications.Add(notification);
+            context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

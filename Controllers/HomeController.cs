@@ -78,15 +78,53 @@ namespace ELearnApplication.Controllers
 
         public ActionResult SignUpAdmin()
         {
+            if (Session["roleId"] != null)
+            {
 
-            if (new ModelContext().Users.ToList().Count != 0)
-                return RedirectToAction("Index");
+                if (Session["roleId"].ToString() == "1")
+                {
+                    //return Content("Admin Page");
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (Session["roleId"].ToString() == "2")
+                {
+                    //return Content("User Page");
+                    return RedirectToAction("Index", "User");
+                }
+                else if (Session["roleId"].ToString() == "3")
+                {
+                    //return Content("Vendor Page");
+                    return RedirectToAction("Index", "Vendor");
+                }
+
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult SignUpAdmin(AdminSignUpDetail details)
         {
+            if (Session["roleId"] != null)
+            {
+
+                if (Session["roleId"].ToString() == "1")
+                {
+                    //return Content("Admin Page");
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (Session["roleId"].ToString() == "2")
+                {
+                    //return Content("User Page");
+                    return RedirectToAction("Index", "User");
+                }
+                else if (Session["roleId"].ToString() == "3")
+                {
+                    //return Content("Vendor Page");
+                    return RedirectToAction("Index", "Vendor");
+                }
+
+            }
+
             var context = new ModelContext();
             User user = new User();
             Address address = new Address();
@@ -120,20 +158,20 @@ namespace ELearnApplication.Controllers
 
         public ActionResult SignUp()
         {
-            if (Session["role"] != null)
+            if (Session["roleId"] != null)
             {
 
-                if (Session["role"].ToString() == "1")
+                if (Session["roleId"].ToString() == "1")
                 {
                     //return Content("Admin Page");
                     return RedirectToAction("Index", "Admin");
                 }
-                else if (Session["role"].ToString() == "2")
+                else if (Session["roleId"].ToString() == "2")
                 {
                     //return Content("User Page");
                     return RedirectToAction("Index", "User");
                 }
-                else if (Session["role"].ToString() == "3")
+                else if (Session["roleId"].ToString() == "3")
                 {
                     //return Content("Vendor Page");
                     return RedirectToAction("Index", "Vendor");
@@ -213,5 +251,13 @@ namespace ELearnApplication.Controllers
             Session.RemoveAll();
             return RedirectToAction("Index");
         }
+
+        public ActionResult NotificationCon()
+        {
+            ModelContext db = new ModelContext();
+            return View(db.Notifications.ToList());
+        }
+
+       
     }
 }

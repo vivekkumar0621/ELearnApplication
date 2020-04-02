@@ -20,11 +20,19 @@ namespace ELearnApplication.Models
 
         public DbSet<Transaction> Transactions { get; set; }
 
-     //   public System.Data.Entity.DbSet<ELearnApplication.Models.NewPassword> NewPasswords { get; set; }
+        public DbSet<CourseRating> CourseRatings { get; set; }
+       
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Course>()
+                .HasOptional(c => c.CRating)
+                .WithRequired(r => r.Course);
+            base.OnModelCreating(modelBuilder);
+        }
 
-        // public System.Data.Entity.DbSet<ELearnApplication.Models.ForgetDetails> ForgetDetails { get; set; }
 
-        //public System.Data.Entity.DbSet<ELearnApplication.Models.AdminSignUpDetail> AdminSignUpDetails { get; set; }
-        //    public System.Data.Entity.DbSet<ELearnApplication.Models.UserDetail> UserDetails { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
+
     }
 }

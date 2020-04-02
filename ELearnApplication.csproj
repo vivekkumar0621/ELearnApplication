@@ -160,6 +160,14 @@
     <Compile Include="Migrations\202003252226379_AddTransactionTable.designer.cs">
       <DependentUpon>202003252226379_AddTransactionTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003311549532_AddCourseRating.cs" />
+    <Compile Include="Migrations\202003311549532_AddCourseRating.designer.cs">
+      <DependentUpon>202003311549532_AddCourseRating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004010506100_AddNotification.cs" />
+    <Compile Include="Migrations\202004010506100_AddNotification.designer.cs">
+      <DependentUpon>202004010506100_AddNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
@@ -227,6 +235,10 @@
     <Content Include="Views\Home\ForgetPassword.cshtml" />
     <Content Include="Views\Home\CreateNewPassword.cshtml" />
     <Content Include="Views\Home\ForgetError.cshtml" />
+    <Content Include="Views\Admin\AddServices.cshtml" />
+    <Content Include="Views\User\Feedback.cshtml" />
+    <Content Include="Views\User\UVIndex2.cshtml" />
+    <Content Include="Views\Home\NotificationCon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -262,6 +274,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003252226379_AddTransactionTable.resx">
       <DependentUpon>202003252226379_AddTransactionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311549532_AddCourseRating.resx">
+      <DependentUpon>202003311549532_AddCourseRating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004010506100_AddNotification.resx">
+      <DependentUpon>202004010506100_AddNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

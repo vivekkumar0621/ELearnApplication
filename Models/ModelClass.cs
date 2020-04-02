@@ -110,6 +110,10 @@ namespace ELearnApplication.Models
         public ActiveStatus CourseStatus { get; set; }
 
         public string Detail { get; set; }
+
+        [ForeignKey("CourseId")]
+        public CourseRating CRating { get; set; }
+
     }
 
     public class Service_Course
@@ -136,5 +140,25 @@ namespace ELearnApplication.Models
         public string EmailId { get; set; }
     }
 
-    
+    public class CourseRating
+    {
+        [Key]
+        public string CourseId { get; set; }
+        public string Comment { get; set; }
+
+        
+        public int UserRating { get; set; } 
+        public Course Course { get; set; }
+    }
+
+    public class Notification
+    {
+        public int NotificationId { get; set; }
+        public string NotificationMessage { get; set; }
+        //Admin,User
+        //course added/removed, service added/removed, user help >> Admin
+        //course added/removed, service added/removed >> User
+        public string NotificationFor { get; set; }
+
+    }
 }
